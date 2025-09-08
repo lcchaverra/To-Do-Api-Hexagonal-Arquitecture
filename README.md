@@ -1,7 +1,7 @@
 # API de Lista de Tareas con Arquitectura Hexagonal
 
 Una API RESTful para gestionar tareas, construida con Node.js, Express y TypeScript siguiendo los principios de la Arquitectura Hexagonal.
-
+ 
 ## Características
 
 - Operaciones CRUD para tareas
