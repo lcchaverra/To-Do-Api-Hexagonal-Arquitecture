@@ -1,6 +1,6 @@
 import { OAS3Definition } from 'swagger-jsdoc';
 
-const swaggerDefinition: OAS3Definition = {
+export const getSwaggerDefinition = (baseUrl: string): OAS3Definition => ({
   openapi: '3.0.0',
   info: {
     title: 'API de Lista de Tareas',
@@ -12,7 +12,7 @@ const swaggerDefinition: OAS3Definition = {
   },
   servers: [
     {
-      url: 'http://localhost:3000',
+      url: baseUrl,
       description: 'Servidor de desarrollo',
     },
   ],
@@ -318,6 +318,7 @@ const swaggerDefinition: OAS3Definition = {
       },
     },
   },
-};
+});
 
-export default swaggerDefinition;
+export default getSwaggerDefinition;
+

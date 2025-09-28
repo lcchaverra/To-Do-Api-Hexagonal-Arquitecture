@@ -5,15 +5,18 @@ import { TaskUseCases } from './application/use-cases/task.use-cases';
 import { InMemoryTaskRepository } from './infrastructure/persistence/in-memory-task.repository';
 import { TaskController } from './interfaces/http/controllers/task.controller';
 import { taskRouter } from './interfaces/http/routes/task.routes';
-import swaggerDefinition from './infrastructure/config/swagger.config';
+import getSwaggerDefinition from './infrastructure/config/swagger.config';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export function createApp(): Application {
   const app = express();
   
   // Configuración de CORS
   const corsOptions = {
-    origin: ["*",'http://localhost:5173', 'http://localhost:3000'],
+    origin: ["*", 'http://localhost:5173', 'http://localhost:3000', 'http://localhost:7100'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -27,8 +30,11 @@ export function createApp(): Application {
   const taskUseCases = new TaskUseCases(taskRepository);
   const taskController = new TaskController(taskUseCases);
   
+  const portFromEnv = process.env.PORT || '7100';
+  const baseUrl = process.env.BASE_URL || `http://localhost:${portFromEnv}`;
+
   const specs = swaggerJsdoc({
-    definition: swaggerDefinition,
+    definition: getSwaggerDefinition(baseUrl),
     apis: ['src/interfaces/http/controllers/*.ts'],
   });
 
@@ -51,7 +57,7 @@ export function createApp(): Application {
 }
 
 if (require.main === module) {
-  const PORT = process.env.PORT || 3000;
+  const PORT = Number(process.env.PORT || 7100);
   const app = createApp();
   
   app.listen(PORT, () => {
@@ -61,3 +67,4 @@ if (require.main === module) {
 }
 
 export default createApp();
+
